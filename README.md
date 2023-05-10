@@ -186,7 +186,7 @@ curl -X 'POST' 'http://localhost:8000/friends/accept_request/' \
   "id": 2
 }'
 ```
-Response
+#### Response
 ```
 {
     'to_user': 'test_user_2'
@@ -204,7 +204,7 @@ curl -X 'POST' 'http://localhost:8000/friends/add_friend/' \
 }'
 ```
 
-### Response
+#### Response
 ```
 {
   'from_user': 'test_user_2'
@@ -224,7 +224,7 @@ curl -X 'GET' 'http://localhost:8000/friends/' \
   -H 'Authorization: e0834994e51a866d63521c45b42952ed2f81b668'
 ```
 
-### Response
+#### Response
 
 ```
 {
@@ -240,7 +240,7 @@ curl -X 'GET' \
   -H 'Authorization: e0834994e51a866d63521c45b42952ed2f81b668'
 ```
 
-### Response
+#### Response
 
 ```
 {
@@ -255,7 +255,7 @@ curl -X 'GET' \
   'http://localhost:8000/friend/my_outgoing_requests/'
 ```
 
-### Response 
+#### Response 
 
 ```
 [
