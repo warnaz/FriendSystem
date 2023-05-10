@@ -1,0 +1,444 @@
+openapi: 3.0.3
+info:
+  title: Friend Project API
+  version: 1.0.0
+  description: Friend system Api
+paths:
+  /auth_token/:
+    post:
+      operationId: auth_token_create
+      tags:
+      - auth_token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /friends/:
+    get:
+      operationId: friends_list
+      description: Friend list
+      summary: List of friends
+      tags:
+      - GET
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Friend'
+          description: ''
+    post:
+      operationId: friends_create
+      description: Creates a user based on tokens auth
+      summary: Create user
+      tags:
+      - POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Friend'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Friend'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Friend'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+  /friends/{id}/:
+    get:
+      operationId: friends_retrieve
+      description: ViewSet for Friend model
+      summary: Retrive specific user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this profile.
+        required: true
+      tags:
+      - GET
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+    put:
+      operationId: friends_update
+      description: ViewSet for Friend model
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this profile.
+        required: true
+      tags:
+      - friends
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Friend'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Friend'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Friend'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+    patch:
+      operationId: friends_partial_update
+      description: ViewSet for Friend model
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this profile.
+        required: true
+      tags:
+      - friends
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFriend'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFriend'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFriend'
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+    delete:
+      operationId: friends_destroy
+      description: ViewSet for Friend model
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this profile.
+        required: true
+      tags:
+      - friends
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /friends/{id}/status/:
+    get:
+      operationId: friends_status_retrieve
+      description: Relationship status between request.user and profile.pk
+      summary: Relationship status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this profile.
+        required: true
+      tags:
+      - GET
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+  /friends/accept_request/:
+    post:
+      operationId: friends_accept_request_create
+      description: Expect id of profile instance
+      summary: Accept friend request
+      tags:
+      - POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendshipRequestResponse'
+          description: ''
+  /friends/add_friend/:
+    post:
+      operationId: friends_add_friend_create
+      description: |-
+        Add a new friend with POST data
+        - to_user
+      summary: Send friend request to data["to_user"]
+      tags:
+      - POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendshipRequest'
+          description: ''
+  /friends/my_incoming_requests/:
+    get:
+      operationId: friends_my_incoming_requests_retrieve
+      description: ViewSet for Friend model
+      summary: Get incoming requests of user
+      tags:
+      - GET
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+  /friends/my_outgoing_requests/:
+    get:
+      operationId: friends_my_outgoing_requests_retrieve
+      description: ViewSet for Friend model
+      summary: Get outgoing requests of user
+      tags:
+      - GET
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Friend'
+          description: ''
+  /friends/reject_request/:
+    post:
+      operationId: friends_reject_request_create
+      description: Expect id of profile instance
+      summary: Reject friend request
+      tags:
+      - POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequestResponse'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendshipRequestResponse'
+          description: ''
+  /friends/remove_friend/:
+    post:
+      operationId: friends_remove_friend_create
+      description: Remove data['to_user'] of user's friends
+      summary: Remove friend
+      tags:
+      - POST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FriendshipRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendshipRequest'
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Friend:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          maxLength: 128
+      required:
+      - id
+      - password
+      - username
+    FriendshipRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        from_user:
+          type: string
+          readOnly: true
+        to_user:
+          type: string
+      required:
+      - from_user
+      - id
+      - to_user
+    FriendshipRequestResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+      required:
+      - id
+    PatchedFriend:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          maxLength: 128
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
